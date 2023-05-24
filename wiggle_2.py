@@ -672,6 +672,7 @@ class WiggleBake(bpy.types.Operator):
         #bake
         bpy.ops.nla.bake(frame_start = context.scene.frame_start,
                         frame_end = context.scene.frame_end,
+                        step = context.scene.wiggle.frame_step
                         only_selected = True,
                         visual_keying = True,
                         use_current_action = context.scene.wiggle.bake_overwrite,
@@ -878,6 +879,7 @@ class WIGGLE_PT_Bake(WigglePanel,bpy.types.Panel):
         layout.use_property_split=True
         layout.use_property_decorate=False
         layout.prop(context.scene.wiggle, 'preroll')
+        layout.prop(context.scene.wiggle, 'frame_step')
         layout.prop(context.scene.wiggle, 'bake_overwrite')
         row = layout.row()
         row.enabled = not context.scene.wiggle.bake_overwrite
@@ -921,6 +923,7 @@ class WiggleScene(bpy.types.PropertyGroup):
     loop: bpy.props.BoolProperty(name='Loop Physics', description='Physics continues as timeline loops', default=True)
     list: bpy.props.CollectionProperty(type=WiggleItem, override={'LIBRARY_OVERRIDABLE','USE_INSERTION'})
     preroll: bpy.props.IntProperty(name = 'Preroll', description='Frames to run simulation before bake', min=0, default=0)
+    frame_step: bpy.props.IntProperty(name = 'Frame Step', description='Frames to skip before adding keyframes.', min=1, default=1)
     is_preroll: bpy.props.BoolProperty(default=False)
     bake_overwrite: bpy.props.BoolProperty(name='Overwrite Current Action', description='Bake wiggle into current action, instead of creating a new one', default = False)
     bake_nla: bpy.props.BoolProperty(name='Current Action to NLA', description='Move existing animation on the armature into an NLA strip', default = False) 
